@@ -29,7 +29,7 @@ except ImportError:
     pass
 
 
-def line_notify(message, line_token):
+def line_notify(message, token):
     # LINEへ送信
     command = "curl -X POST -H 'Authorization: Bearer {0}' -F 'message={1}' {2}".format(line_token, message, LINE_NOTIFY_URL)
     subprocess.getoutput(command)
@@ -49,6 +49,7 @@ def main():
     while True:
         # 猫感センサー反応してる？
         enabled_cat_sensor = (GPIO.input(GPIO_NO_CAT_SENSOR) == GPIO.HIGH)
+        print(enabled_cat_sensor)
 
         if DEBUG:
             # デバッグ時はLED点灯/消灯
