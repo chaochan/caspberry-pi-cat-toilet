@@ -46,17 +46,32 @@ def main():
         GPIO.setup(GPIO_NO_LED, GPIO.OUT)
 
     # ポーリング監視
+    counter = 0
     while True:
         # 猫感センサー反応してる？
+        enabled_cat_sensor_before = enabled_cat_sensor
         enabled_cat_sensor = (GPIO.input(GPIO_NO_CAT_SENSOR) == GPIO.HIGH)
+
+        if counter > 0:
+            counter += 1
+        if counter >= 10:
+            counter = 0
+
+        # 前回までセンサが反応している場合はカウント開始
+        # 指定カウント以内で再度センサ反応していれば、トイレに入っている事にする
+        if enabled_cat_sensor_before and not enabled_cat_sensor:
+            counter += 1
+
         if DEBUG:
             print(enabled_cat_sensor)
             # デバッグ時はLED点灯/消灯
             GPIO.output(GPIO_NO_LED, GPIO.HIGH if enabled_cat_sensor else GPIO.LOW)
         else:
             if enabled_cat_sensor:
-                line_notify(message=CAT_SENSOR_ENABLED_LINE_MESSAGE, token=LINE_TOKEN)
-                time.sleep(CAT_SENSOR_ENABLED_SLEEP_TIME_SEC)   # LINE通知後はしばらくスリープ(何回も通知されるのを防ぐため)
+                if counter > 0:
+                    line_notify(message=CAT_SENSOR_ENABLED_LINE_MESSAGE, token=LINE_TOKEN)
+                    time.sleep(CAT_SENSOR_ENABLED_SLEEP_TIME_SEC)   # LINE通知後はしばらくスリープ(何回も通知されるのを防ぐため)
+                    counter = 0
 
         time.sleep(POLLING_SLEEP_TIME_SEC)
 
