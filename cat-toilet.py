@@ -47,6 +47,7 @@ def main():
 
     # ポーリング監視
     counter = 0
+    enabled_cat_sensor = False
     while True:
         # 猫感センサー反応してる？
         enabled_cat_sensor_before = enabled_cat_sensor
