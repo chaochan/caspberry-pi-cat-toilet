@@ -31,7 +31,7 @@ except ImportError:
 
 def line_notify(message, token):
     # LINEへ送信
-    command = "curl -X POST -H 'Authorization: Bearer {0}' -F 'message={1}' {2}".format(line_token, message, LINE_NOTIFY_URL)
+    command = "curl -X POST -H 'Authorization: Bearer {0}' -F 'message={1}' {2}".format(token, message, LINE_NOTIFY_URL)
     subprocess.getoutput(command)
 
 
