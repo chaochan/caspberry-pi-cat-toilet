@@ -49,7 +49,7 @@ def main():
     while True:
         # 猫感センサー反応してる？
         enabled_cat_sensor = (GPIO.input(GPIO_NO_CAT_SENSOR) == GPIO.HIGH)
-        print(enabled_cat_sensor)
+        #print(enabled_cat_sensor)
 
         if DEBUG:
             # デバッグ時はLED点灯/消灯
